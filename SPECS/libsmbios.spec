@@ -10,7 +10,7 @@
 
 Name: libsmbios
 Version: 2.3.3
-Release: 6%{?dist}
+Release: 6.1%{?dist}
 License: GPLv2+ or OSL 2.1
 Summary: Libsmbios C/C++ shared libraries
 Group: System Environment/Libraries
@@ -54,6 +54,10 @@ Libsmbios is a library and utilities that can be used by client programs to get
 information from standard BIOS tables, such as the SMBIOS table.
 
 This package provides the C-based libsmbios library, with a C interface.
+
+This package also has a C++-based library, with a C++ interface. It is not
+actively maintained, but provided for backwards compatibility. New programs
+should use the libsmbios C interface.
 
 %package -n python-smbios
 Summary: Python interface to Libsmbios C library
@@ -132,7 +136,7 @@ cd _build
 echo '../configure "$@"' > configure
 chmod +x ./configure
 
-%configure
+%configure --enable-libsmbios_cxx
 
 mkdir -p out/libsmbios_c
 mkdir -p out/libsmbios_c++
@@ -223,15 +227,18 @@ rm -rf %{buildroot}
 %files -f _build/%{lang_dom}.lang
 %defattr(-,root,root,-)
 %{_libdir}/libsmbios_c.so.*
+%{_libdir}/libsmbios.so.*
 
 %files -n libsmbios-devel -f _build/buildlogs.txt
 %defattr(-,root,root,-)
 %doc COPYING-GPL COPYING-OSL README.md src/bin/getopts_LICENSE.txt src/include/smbios/config/boost_LICENSE_1_0_txt
 %{_includedir}/smbios
 %{_includedir}/smbios_c
+%{_libdir}/libsmbios.so
 %{_libdir}/libsmbios_c.so
 %{_libdir}/pkgconfig/*.pc
 %doc _build/out/libsmbios_c-%{_arch}
+%doc _build/out/libsmbios_c++-%{_arch}
 
 %files -n smbios-utils
 # opensuse 11.1 enforces non-empty file list :(
@@ -251,6 +258,8 @@ rm -rf %{buildroot}
 %{_mandir}/man8/smbios-upflag-ctl.*
 %{_sbindir}/smbios-sys-info-lite
 %{_mandir}/man8/smbios-sys-info-lite.*
+%{_sbindir}/dellLEDCtl
+%{_sbindir}/dellMediaDirectCtl
 
 %files -n python-smbios
 %defattr(-,root,root,-)
@@ -288,6 +297,9 @@ rm -rf %{buildroot}
 %{_datadir}/smbios-utils
 
 %changelog
+* Thu Apr 12 2018 Carl George <carl@george.computer> - 2.3.3-6.1
+- Hotfix for https://access.redhat.com/solutions/3409271
+
 * Wed Feb 14 2018 Peter Jones <pjones@redhat.com> - 2.3.3-6
 - Pull in all the coverity fixes we sent upstream.  I had thought these
   made it in to this release; they did not, but the 2.4.0 release they are
