@@ -10,7 +10,7 @@
 
 Name: libsmbios
 Version: 2.3.3
-Release: 6.1%{?dist}
+Release: 6.2%{?dist}
 License: GPLv2+ or OSL 2.1
 Summary: Libsmbios C/C++ shared libraries
 Group: System Environment/Libraries
@@ -42,7 +42,6 @@ Patch0014: 0014-Fix-a-leaked-file-handle.patch
 Patch0015: 0015-Fix-some-plausible-buffer-overruns.patch
 Patch0016: 0016-Don-t-leak-smbios_strerror-memory.patch
 Patch0017: 0017-Fix-some-impossible-logic.patch
-Patch0018: 0018-sysinfo_get_asset_tag-get-rid-of-a-strncpy-off-by-on.patch
 Patch0019: 0019-sysinfo_get_dell_oem_system_id-don-t-look-at-the-wro.patch
 Patch0020: 0020-dell_encode_service_tag-remove-conditionals-that-can.patch
 Patch0021: 0021-token.c-don-t-leak-allocated-token-tables.patch
@@ -297,6 +296,9 @@ rm -rf %{buildroot}
 %{_datadir}/smbios-utils
 
 %changelog
+* Thu Apr 12 2018 Carl George <carl@george.computer> - 2.3.3-6.2
+- Remove patch18, which is causing smbios-sys-info-lite to crash
+
 * Thu Apr 12 2018 Carl George <carl@george.computer> - 2.3.3-6.1
 - Hotfix for https://access.redhat.com/solutions/3409271
 
